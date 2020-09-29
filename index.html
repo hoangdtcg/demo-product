@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="Product.js"></script>
+    <script src="ProductManagement.js"></script>
+</head>
+<style>
+    table,td,th {
+        border: 1px solid;
+    }
+    td,th{
+        width: 200px;
+    }
+</style>
+<body>
+<form>
+    <fieldset>
+        <legend>ADD PRODUCT</legend>
+        <input type="text" id="product-name" placeholder="Product Name">
+        <input type="text" id="product-price" placeholder="Product Price">
+        <input type="text" id="product-desc" placeholder="Product Description">
+        <input type="text" id="product-img" placeholder="Product Image Link">
+        <button type="button" onclick="addProduct()">ADD</button>
+        <button type="reset">RESET</button>
+    </fieldset>
+</form>
+<div id="list-product"></div>
+</body>
+<script>
+    let productManage = new ProductManagement("Quan Ly San Pham");
+    function display() {
+        document.getElementById("list-product").innerHTML = productManage.getHtml();
+    }
+
+    function addProduct() {
+        let name = document.getElementById("product-name").value;
+        let price = document.getElementById("product-price").value;
+        let desc = document.getElementById("product-desc").value;
+        let img = document.getElementById("product-img").value;
+        let product = new Product(name,price,desc,img);
+        productManage.addProduct(product);
+        display();
+    }
+    display();
+</script>
+</html>

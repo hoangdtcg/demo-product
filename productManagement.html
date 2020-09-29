@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+</head>
+<style>
+    form{
+        width: 300px;
+        display: inline-block;
+    }
+    input{
+        width: 250px;
+        margin-bottom: 10px;
+    }
+    img{
+        width: 100px;
+    }
+    table{
+        display: block;
+    }
+</style>
+<body>
+<form>
+    <fieldset>
+        <legend>Add Product</legend>
+        <input type="text" placeholder="product name" id="product-name">
+        <input type="text" placeholder="product price" id="product-price">
+        <input type="text" placeholder="product desc" id="product-desc">
+        <input type="text" placeholder="product image" id="product-img">
+        <button type="button" onclick="addProduct()">Add</button>
+        <button type="reset">Reset</button>
+    </fieldset>
+</form>
+
+<form>
+    <fieldset>
+        <legend>Update Product</legend>
+        <input type="text" placeholder="product name" id="edit-name">
+        <input type="text" placeholder="product price" id="edit-price">
+        <input type="text" placeholder="product desc" id="edit-desc">
+        <input type="text" placeholder="product image" id="edit-img">
+        <button type="button" onclick="updateItem()">Update</button>
+        <button type="reset">Reset</button>
+    </fieldset>
+</form>
+
+<br>
+<br>
+<br>
+<table border="1px solid" cellspacing="0" id="main"></table>
+
+<script>
+    class Product{
+        constructor(name,price,desc,img) {
+            this.id = 0;
+            this.name = name;
+            this.price = price;
+            this.desc = desc;
+            this.img = img;
+        }
+        getHtml(){
+            let str = `<tr>
+                        <td>${this.id + 1}</td>
+                        <td>${this.name}</td>
+                        <td>${this.price}</td>
+                        <td>${this.desc}</td>
+                        <td><img src="${this.img}"/></td>
+                        <td><button onclick="editItem(${this.id})">Edit</button></td>
+                        <td><button onclick="deleteItem(${this.id})">Remove</button></td>
+                    </tr>`;
+            return str;
+        }
+    }
+
+
+    let products = [];
+    let current = 1;
+    function displayProduct() {
+        let str = `<tr>
+                        <th>STT</th>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Product Desc</th>
+                        <th>Product Image</th>
+                   </tr>`;
+        for (let i = 0; i < products.length; i++) {
+            products[i].id = i;
+            str += products[i].getHtml();
+        }
+
+        document.getElementById("main").innerHTML = str;
+    }
+
+    function addProduct() {
+        let name = document.getElementById("product-name");
+        let price = document.getElementById("product-price");
+        let desc = document.getElementById("product-desc");
+        let img = document.getElementById("product-img");
+        if(name.value === "" || price.value === "")return;
+        let product = new Product(name.value,price.value,desc.value,img.value);
+        products.push(product);
+        displayProduct();
+    }
+
+    function deleteItem(index) {
+        products.splice(index,1);
+        displayProduct();
+    }
+
+    function editItem(index) {
+        document.getElementById("edit-name").value = products[index].name;
+        document.getElementById("edit-price").value = products[index].price;
+        document.getElementById("edit-desc").value = products[index].desc;
+        document.getElementById("edit-img").value = products[index].img;
+        current = index;
+    }
+    function updateItem(){
+        let index = current;
+        products[index].name = document.getElementById("edit-name").value;
+        products[index].price = document.getElementById("edit-price").value;
+        products[index].desc = document.getElementById("edit-desc").value;
+        products[index].img = document.getElementById("edit-img").value;
+        displayProduct();
+    }
+
+    displayProduct();
+</script>
+</body>
+</html>
